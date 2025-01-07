@@ -34,9 +34,8 @@ jobs:
       - name: Verify formatting
         run: deno fmt --check
 
-      # TODO: Fix lint
-      #   - name: Run linter
-      #     run: deno lint
+      - name: Run linter
+        run: deno lint
 
       - name: Run tests
         run: deno test -A
