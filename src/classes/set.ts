@@ -1,4 +1,4 @@
-import { ISet, ISetImage, ILegality } from "../interfaces/index.ts";
+import { ILegality, ISet, ISetImage } from "../interfaces/index.ts";
 
 export class Set implements ISet {
   id: string = "";

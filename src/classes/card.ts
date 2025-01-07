@@ -1,15 +1,15 @@
 import {
-  ICard,
-  ISet,
-  ILegality,
-  ICardImage,
-  ITCGPlayer,
-  ICardmarket,
-  IAncientTrait,
   IAbility,
+  IAncientTrait,
   IAttack,
-  IWeakness,
+  ICard,
+  ICardImage,
+  ICardmarket,
+  ILegality,
   IResistance,
+  ISet,
+  ITCGPlayer,
+  IWeakness,
 } from "../interfaces/index.ts";
 
 export class Card implements ICard {
