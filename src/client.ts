@@ -49,7 +49,7 @@ class Client {
     },
     where: (args: TcgArgs) => this._get<T>(type, args),
     all: (args: TcgArgs = {}, data: T[] = []) => {
-      const getAll = (type: string, args: TcgArgs): Promise<any> => {
+      const getAll = (type: string, args: TcgArgs): Promise<T[]> => {
         const page = args.page ? args.page + 1 : 1;
 
         return this._get<T>(type, { ...args, page })
@@ -65,7 +65,10 @@ class Client {
 
             return getAll(type, { ...args, page });
           })
-          .catch((error) => console.error(error));
+          .catch((error) => {
+            console.error(error);
+            return [];
+          });
       };
       return getAll(type, args);
     },
@@ -73,8 +76,8 @@ class Client {
 
   cards = this._queryBuilder<Card>("cards");
   sets = this._queryBuilder<Set>("sets");
-  types = this._queryBuilder<any>("types");
-  subtypes = this._queryBuilder<any>("subtypes");
-  rarity = this._queryBuilder<any>("rarity");
-  supertypes = this._queryBuilder<any>("supertypes");
+  types = this._queryBuilder<string>("types");
+  subtypes = this._queryBuilder<string>("subtypes");
+  supertypes = this._queryBuilder<string>("supertypes");
+  rarity = this._queryBuilder<string>("rarity");
 }
