@@ -1,4 +1,5 @@
 import qs from "https://deno.land/x/deno_qs/mod.ts";
+import { TcgResponse, TcgArgs, TcgHeaders } from "./type.ts";
 
 export const getApiClient = (apiKey: string) => {
     return new Client(apiKey);
@@ -17,7 +18,7 @@ class Client {
     }
 
     private _getOptions() {
-        const headers: any = {};
+        const headers: TcgHeaders = {};
 
         if (this.apiKey) {
             headers['X-Api-Key'] = this.apiKey;
@@ -28,7 +29,7 @@ class Client {
         }
     }
 
-    private _get(path: string, args: any): Promise<any> {
+    private _get(path: string, args: TcgArgs): Promise<TcgResponse> {
         return fetch(`${this.host}/${path}${args && '?' + qs.stringify(args)}`, {
             ...this._getOptions(),
             method: 'GET'
@@ -45,9 +46,9 @@ class Client {
             .then(response => response.json())
             .then(json => json.data);
         },
-        where: (args: any) => this._get(type, args),
-        all: (args: any={}, data: any[]=[]) => {
-            const getAll = (type: string, args: any): Promise<any> => {
+        where: (args: TcgArgs) => this._get(type, args),
+        all: (args: TcgArgs={}, data: any[]=[]) => {
+            const getAll = (type: string, args: TcgArgs): Promise<any> => {
                 const page = args.page ? args.page + 1 : 1;
     
                 return this._get(type, {...args, page})
