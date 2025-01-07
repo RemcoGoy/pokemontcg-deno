@@ -1,5 +1,7 @@
 import qs from "https://deno.land/x/deno_qs/mod.ts";
-import { TcgArgs, TcgHeaders, TcgResponse } from "./type.ts";
+import { TcgArgs, TcgHeaders, TcgQueryBuilder, TcgResponse } from "./type.ts";
+import { Card } from "./classes/card.ts";
+import { Set } from "./classes/set.ts";
 
 export const getApiClient = (apiKey: string) => {
   return new Client(apiKey);
@@ -29,35 +31,34 @@ class Client {
     };
   }
 
-  private _get(path: string, args: TcgArgs): Promise<TcgResponse> {
+  private _get<T>(path: string, args: TcgArgs): Promise<TcgResponse<T>> {
     return fetch(`${this.host}/${path}${args && "?" + qs.stringify(args)}`, {
       ...this._getOptions(),
       method: "GET",
-    })
-      .then((response) => response.json());
+    }).then((response) => response.json());
   }
 
-  private _queryBuilder = (type: string) => ({
+  private _queryBuilder = <T>(type: string): TcgQueryBuilder<T> => ({
     find: (id: string) => {
       return fetch(`${this.host}/${type}/${id}`, {
         ...this._getOptions(),
         method: "GET",
       })
         .then((response) => response.json())
-        .then((json) => json.data);
+        .then((json) => json.data as T);
     },
-    where: (args: TcgArgs) => this._get(type, args),
-    all: (args: TcgArgs = {}, data: any[] = []) => {
+    where: (args: TcgArgs) => this._get<T>(type, args),
+    all: (args: TcgArgs = {}, data: T[] = []) => {
       const getAll = (type: string, args: TcgArgs): Promise<any> => {
         const page = args.page ? args.page + 1 : 1;
 
-        return this._get(type, { ...args, page })
+        return this._get<T>(type, { ...args, page })
           .then((response) => {
             data.push(...response.data);
 
             if (
               !response.totalCount ||
-              (response.pageSize * response.page) >= response.totalCount
+              response.pageSize * response.page >= response.totalCount
             ) {
               return data;
             }
@@ -70,10 +71,10 @@ class Client {
     },
   });
 
-  cards = this._queryBuilder("cards");
-  sets = this._queryBuilder("sets");
-  types = this._queryBuilder("types");
-  subtypes = this._queryBuilder("subtypes");
-  rarity = this._queryBuilder("rarity");
-  supertypes = this._queryBuilder("supertypes");
+  cards = this._queryBuilder<Card>("cards");
+  sets = this._queryBuilder<Set>("sets");
+  types = this._queryBuilder<any>("types");
+  subtypes = this._queryBuilder<any>("subtypes");
+  rarity = this._queryBuilder<any>("rarity");
+  supertypes = this._queryBuilder<any>("supertypes");
 }
