@@ -1,14 +1,14 @@
 {
-    "name": "pokemon-tcg-deno",
-    "description": "Pokemon TCG Wrapper for Deno",
-    "version": "0.0.1",
-    "stable": true,
-    "fmt": true,
-    "repository": "https://github.com/RemcoGoy/pokemon-tcg-deno",
-    "files": [
-        "./mod.ts",
-        "./src/**/*",
-        "./LICENSE",
-        "./README.md"
-    ]
+  "name": "pokemon-tcg-deno",
+  "description": "Pokemon TCG Wrapper for Deno",
+  "version": "0.0.1",
+  "stable": true,
+  "fmt": true,
+  "repository": "https://github.com/RemcoGoy/pokemon-tcg-deno",
+  "files": [
+    "./mod.ts",
+    "./src/**/*",
+    "./LICENSE",
+    "./README.md"
+  ]
 }
