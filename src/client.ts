@@ -32,7 +32,11 @@ class Client {
   }
 
   private _get<T>(path: string, args: TcgArgs): Promise<TcgResponse<T>> {
-    return fetch(`${this.host}/${path}${args && "?" + qs.stringify(args)}`, {
+    const query = args && "?" + qs.stringify(args);
+    const url = `${this.host}/${path}${query}`;
+
+    console.log(url);
+    return fetch(url, {
       ...this._getOptions(),
       method: "GET",
     }).then((response) => response.json());

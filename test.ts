@@ -49,3 +49,11 @@ Deno.test("find all pokemon cards with name Rotom", async () => {
 
   assertEquals(cards.length, 45);
 });
+
+Deno.test("find first 13 pokemon cards", async () => {
+  const client = getClient();
+
+  const cards = await client.cards.where({ pageSize: 13, page: 1 });
+
+  assertEquals(cards.data.length, 13);
+});
